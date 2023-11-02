@@ -54,7 +54,7 @@ command = st.text_input(
 
 if command:
     stdout, stderr = run_shell_command(command)
-    st.session_state.terminal_history.append(
-        {"command": command, "stdout": stdout, "stderr": stderr}
-    )
+    log = {"command": command, "stdout": stdout, "stderr": stderr}
+    print(log)
+    st.session_state.terminal_history.append(log)
     st.text_area("Terminal Log", value=generate_terminal_output(), height=400)
