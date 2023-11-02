@@ -38,7 +38,7 @@ def run_shell_command(command):
 
 def generate_terminal_output():
     output = []
-    for element in st.session_state.terminal_history:
+    for element in reversed(st.session_state.terminal_history):
         output.append(f"> {element['command']}")
         if element["stdout"]:
             output.append(f"{element['stdout']}")
