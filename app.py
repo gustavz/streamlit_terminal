@@ -2,13 +2,23 @@ import subprocess
 
 import streamlit as st
 
-# Initialize session state variables
+
 SESSION_DEFAULTS = dict(
-    terminal_history=[],
+    terminal_log=[],
 )
 for k, v in SESSION_DEFAULTS.items():
     if k not in st.session_state:
         st.session_state[k] = v
+
+HELP = """
+This unrestricted terminal let's you do whatever you want.
+For example, you can use it to rewrite the app while it's running.
+Try starting with these two simple commands and let your imagination take off from there:
+```
+echo "app = st.text_area('Modify the running app',  open('app.py').read(), height=500)" >> app.py
+echo "open('app.py', 'w').write(app)" >> app.py
+```
+"""
 
 st.set_page_config(page_title="Insecure Streamlit Terminal", layout="centered")
 st.title("Insecure Streamlit Terminal")
@@ -38,9 +48,9 @@ def run_shell_command(command):
         return e.stdout, e.stderr
 
 
-def generate_terminal_output():
+def generate_terminal_log_string():
     output = []
-    for element in reversed(st.session_state.terminal_history):
+    for element in reversed(st.session_state.terminal_log):
         output.append(f"> {element['command']}")
         if element["stdout"]:
             output.append(f"{element['stdout']}")
@@ -52,11 +62,12 @@ def generate_terminal_output():
 command = st.text_input(
     label="Shell Command",
     placeholder="Type your command here and press enter. Chain commands with '&&' as the terminal is stateless.",
+    help=HELP,
 )
 
 if command:
     stdout, stderr = run_shell_command(command)
     log = {"command": command, "stdout": stdout, "stderr": stderr}
     print(log)
-    st.session_state.terminal_history.append(log)
-    st.text_area("Terminal Log", value=generate_terminal_output(), height=400)
+    st.session_state.terminal_log.append(log)
+    st.text_area("Terminal Log", value=generate_terminal_log_string(), height=400)
