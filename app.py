@@ -17,6 +17,8 @@ st.warning(
 ⚠️ Security Warning: This app allows execution of arbitrary commands which can be used to compromise your system. 
 Never run this in a production environment or on a system with sensitive data. 
 Always use within a secure, controlled environment and only with trusted users.
+
+This is a hosted terminal with internet access. The possibilties are endless. Use with caution.
 """
 )
 
